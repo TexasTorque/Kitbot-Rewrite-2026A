@@ -1,13 +1,15 @@
-/* #include "subsystems/launcherSubsystem.hpp"
+#include "subsystems/launcherSubsystem.hpp"
 #include "frc/smartdashboard/SmartDashboard.h"
 #include "frc2/command/CommandPtr.h"
 #include "frc2/command/Commands.h"
-#include "rev/ConfigureTypes.h"
-#include "rev/config/SparkMaxConfig.h"
+
 #include "units/voltage.h"
 
-launcherSubsystem::launcherSubsystem() { ConfigureRollerMotor(); }
-
+launcherSubsystem::launcherSubsystem(std::unique_ptr<launcherIO> io)
+    : m_io(std::move(io)),
+      m_state(launcherStateEnum::Off, [this](const launcherStateEnum& newState) { ApplyState(newState); }) {
+  SetName("launcherSubsystem");
+}
 void launcherSubsystem::ConfigureRollerMotor() {
   rev::spark::SparkMaxConfig config{};
 
@@ -31,4 +33,3 @@ void launcherSubsystem::Periodic() {
                                  m_rollerMotor.GetEncoder().GetPosition());
 }
 
-*/
